@@ -61,6 +61,10 @@ resource "aws_route_table" "private" {
     Name = "week1-private-route-table"
   }
 }
+resource "aws_route_table_association" "private" {
+  subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
+}
 resource "aws_security_group" "app" {
   name        = "week1-app-security-group"
   description = "Security group for the public application"
@@ -112,7 +116,7 @@ resource "aws_vpc_security_group_ingress_rule" "database_from_app" {
 
   referenced_security_group_id = aws_security_group.app.id
   from_port                    = 5432
-  to_port                      = 5
+  to_port                      = 5432
   ip_protocol                  = "tcp"
 
   description = "Allow PostgreSQL traffic from the application security group"
