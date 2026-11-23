@@ -280,3 +280,9 @@ Future improvements would be evaluated separately before any deployment.
 This project demonstrates how Terraform can be used to define a foundational AWS network with separate public and private subnets, explicit routing, and application-to-database security group permissions.
 
 The configuration was developed as a hands-on cloud engineering exercise and validated locally without deploying AWS resources.
+
+## Hands-on Engineering Training
+
+- [November 23, 2026 — Cloud / Platform Engineering Lab](docs/training/2026-11-23-cloud-platform-engineering.md): Terraform inspection, Linux permissions, Git, Docker troubleshooting, local Kubernetes deployment and cleanup, and GitHub Actions validation concepts.
+
+The Kubernetes workload was deployed locally and removed after verification. AWS infrastructure remains undeployed; automated CI implementation is future work.
