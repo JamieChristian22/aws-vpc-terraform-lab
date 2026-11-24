@@ -51,3 +51,11 @@ terraform.rc
 credentials.json
 service-account*.json
 *.kubeconfig
+
+# Local credentials and infrastructure artifacts (prevent accidental new tracking)
+!*.tfvars.example
+.terraform/
+id_rsa
+id_ed25519
+.aws/credentials
+.kube/config
