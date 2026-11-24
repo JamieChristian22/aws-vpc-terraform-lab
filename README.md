@@ -1,5 +1,12 @@
 # AWS VPC Networking with Terraform
 
+AWS cloud networking and Terraform infrastructure-as-code lab covering VPC design, subnet isolation, route tables, security groups and credential-free GitHub Actions validation. No AWS infrastructure has been deployed.
+
+**Explore related projects:** [cloud platform engineering lab](https://github.com/JamieChristian22/cloud-platform-engineering-lab) · [aws security networking](https://github.com/JamieChristian22/aws-security-networking) · [cloud infrastructure troubleshooting lab](https://github.com/JamieChristian22/cloud-infrastructure-troubleshooting-lab)
+
+[Recruiter quick-start guide](https://github.com/JamieChristian22/JamieChristian22/blob/main/RECRUITER_START_HERE.md) · [Portfolio website](https://jamiechristian22.github.io/)
+
+
 [![Terraform validation](https://github.com/JamieChristian22/aws-vpc-terraform-lab/actions/workflows/terraform-validate.yml/badge.svg)](https://github.com/JamieChristian22/aws-vpc-terraform-lab/actions/workflows/terraform-validate.yml)
 
 **Recruiter quick start:** [Infrastructure source](main.tf) · [Hands-on training log](docs/training/2026-11-23-cloud-platform-engineering.md) · [Validation workflow](.github/workflows/terraform-validate.yml)
