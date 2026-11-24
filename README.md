@@ -219,7 +219,7 @@ Validation does not prove that AWS resources can be deployed successfully or tha
 
 A validation-only [GitHub Actions workflow](.github/workflows/terraform-validate.yml) checks Terraform formatting, initializes the pinned provider without a backend, and validates the configuration on relevant pushes, pull requests, and manual runs. It uses read-only repository permissions and does not need AWS credentials.
 
-Check the [Actions page](https://github.com/JamieChristian22/aws-vpc-terraform-lab/actions/workflows/terraform-validate.yml) for actual run results; adding the workflow alone does not prove a successful run or successful AWS deployment.
+**Verified CI result (November 23, 2026 U.S. Eastern):** The [corrective validation run](https://github.com/JamieChristian22/aws-vpc-terraform-lab/actions/runs/45314183364) passed after a cross-platform provider checksum mismatch in the initial run. The workflow obtains signed platform checksums, preserves the selected provider version, initializes with a read-only lock file, and retains the generated lock as an artifact. The generated platform hashes are not yet committed to the repository lock file. No AWS resources were deployed. Check the [Actions page](https://github.com/JamieChristian22/aws-vpc-terraform-lab/actions/workflows/terraform-validate.yml) for newer results.
 
 ## Project Structure
 
