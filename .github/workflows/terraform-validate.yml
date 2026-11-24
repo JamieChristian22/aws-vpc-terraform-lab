@@ -32,8 +32,19 @@ jobs:
           terraform_wrapper: false
       - name: Check formatting
         run: terraform fmt -check -recursive
+      - name: Resolve signed provider checksums for Linux and macOS
+        # Preserve the selected provider version; obtain platform hashes from the origin registry.
+        run: terraform providers lock -platform=linux_amd64 -platform=darwin_arm64
       - name: Initialize providers without backend
         run: terraform init -backend=false -lockfile=readonly -input=false
+      - name: Retain platform lock file for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: platform-provider-lock
+          path: .terraform.lock.hcl
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: error
       - name: Validate configuration
         run: terraform validate -no-color
 
