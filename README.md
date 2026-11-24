@@ -1,5 +1,8 @@
-
 # AWS VPC Networking with Terraform
+
+[![Terraform validation](https://github.com/JamieChristian22/aws-vpc-terraform-lab/actions/workflows/terraform-validate.yml/badge.svg)](https://github.com/JamieChristian22/aws-vpc-terraform-lab/actions/workflows/terraform-validate.yml)
+
+**Recruiter quick start:** [Infrastructure source](main.tf) · [Hands-on training log](docs/training/2026-11-23-cloud-platform-engineering.md) · [Validation workflow](.github/workflows/terraform-validate.yml)
 
 A hands-on Infrastructure as Code (IaC) project demonstrating AWS networking, subnet isolation, route table management, and security group configuration using Terraform.
 
@@ -46,6 +49,32 @@ The configuration defines a VPC in the `us-east-1` AWS Region.
 | Private Internet Access | No default internet route |
 | Application Protocol | HTTPS / TCP 443 |
 | Database Protocol | PostgreSQL / TCP 5432 |
+
+### Network and trust boundaries
+
+```mermaid
+flowchart TB
+    Internet["Internet"]
+    subgraph VPC["AWS VPC · 10.0.0.0/16 · us-east-1"]
+        IGW["Internet gateway"]
+        subgraph Public["Public subnet · 10.0.1.0/24 · us-east-1a"]
+            PubRT["Public route table"]
+            App["Application security group<br/>Conceptual workload"]
+        end
+        subgraph Private["Private subnet · 10.0.2.0/24 · us-east-1b"]
+            PriRT["Private route table<br/>No default internet route"]
+            DB["Database security group<br/>Conceptual workload"]
+        end
+        PubRT -->|"0.0.0.0/0"| IGW
+        App -->|"TCP 5432 · SG reference"| DB
+        App -. "Subnet route association" .-> PubRT
+        DB -. "Subnet route association" .-> PriRT
+    end
+    Internet -->|"HTTPS · TCP 443"| IGW
+    IGW --> App
+```
+
+This diagram depicts intended logical reachability and subnet associations, not a deployed network. Security groups attach to workload network interfaces; they are not themselves servers or routing devices. No EC2 or RDS instance is provisioned.
 
 ### Architecture Overview
 
@@ -179,6 +208,12 @@ Validation does not prove that AWS resources can be deployed successfully or tha
 
 **No `terraform apply` was executed.**
 
+## Continuous integration
+
+A validation-only [GitHub Actions workflow](.github/workflows/terraform-validate.yml) checks Terraform formatting, initializes the pinned provider without a backend, and validates the configuration on relevant pushes, pull requests, and manual runs. It uses read-only repository permissions and does not need AWS credentials.
+
+Check the [Actions page](https://github.com/JamieChristian22/aws-vpc-terraform-lab/actions/workflows/terraform-validate.yml) for actual run results; adding the workflow alone does not prove a successful run or successful AWS deployment.
+
 ## Project Structure
 
 ```text
@@ -188,6 +223,8 @@ aws-vpc-terraform-lab/
 +-- README.md
 +-- .gitignore
 +-- .terraform.lock.hcl
++-- .github/workflows/terraform-validate.yml
++-- docs/training/2026-11-23-cloud-platform-engineering.md
 ```
 
 Terraform may also create a local `.terraform/` directory after initialization. That directory is excluded from Git.
@@ -254,7 +291,7 @@ The security group definitions also require review of default outbound behavior 
 4. Add an Amazon RDS PostgreSQL database.
 5. Introduce VPC endpoints where appropriate.
 6. Add VPC Flow Logs and monitoring.
-7. Implement Terraform CI checks.
+7. Review and maintain the Terraform CI checks; confirm successful runs.
 8. Add automated infrastructure security scanning.
 9. Implement cost estimates and deployment safeguards.
 10. Test the network in an authorized AWS environment.
@@ -285,4 +322,4 @@ The configuration was developed as a hands-on cloud engineering exercise and val
 
 - [November 23, 2026 — Cloud / Platform Engineering Lab](docs/training/2026-11-23-cloud-platform-engineering.md): Terraform inspection, Linux permissions, Git, Docker troubleshooting, local Kubernetes deployment and cleanup, and GitHub Actions validation concepts.
 
-The Kubernetes workload was deployed locally and removed after verification. AWS infrastructure remains undeployed; automated CI implementation is future work.
+The Kubernetes workload was deployed locally and removed after verification. AWS infrastructure remains undeployed; a validation-only CI workflow has since been added; review the Actions page for execution status.
