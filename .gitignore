@@ -42,3 +42,12 @@ terraform.rc
 .DS_Store
 .vscode/
 .idea/
+
+# Local cloud credentials and sensitive infrastructure artifacts
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+*.kubeconfig
